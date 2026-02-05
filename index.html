@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ShieldSense HR — employee management and security platform with phishing defense, HR updates, training videos, and role-based dashboards."
+    />
+    <title>ShieldSense HR | Secure Workforce Platform</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <style>
+      :root {
+        --bg: #0b0d12;
+        --bg-2: #121520;
+        --ink: #eef1ff;
+        --muted: #a9b1cc;
+        --lime: #c6ff4f;
+        --sky: #66d1ff;
+        --rose: #ff7bc7;
+        --amber: #ffb24f;
+        --card: rgba(22, 26, 40, 0.72);
+        --stroke: rgba(140, 150, 180, 0.3);
+        --glow: 0 0 60px rgba(102, 209, 255, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1000px 500px at 10% -20%, rgba(102, 209, 255, 0.2), transparent 70%),
+          radial-gradient(900px 500px at 90% 5%, rgba(255, 123, 199, 0.18), transparent 70%),
+          linear-gradient(160deg, #0a0c11, #101523 60%, #0a0c11);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        position: relative;
+        isolation: isolate;
+      }
+
+      .floating-noise {
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .topbar {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 26px 24px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+      }
+
+      .brand-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #0f1222, #2b2f4a);
+        color: var(--lime);
+        font-weight: 800;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      .hero {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        align-items: center;
+      }
+
+      .hero-copy {
+        position: relative;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--muted);
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(15, 17, 28, 0.6);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.4rem, 4vw, 3.5rem);
+        margin: 18px 0 12px;
+        line-height: 1.1;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.7;
+        max-width: 520px;
+      }
+
+      .word-slider {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+        height: 1.1em;
+        position: relative;
+        min-width: 220px;
+      }
+
+      .word-slider span {
+        display: block;
+        animation: wordSlide 9s infinite;
+      }
+
+      .word-slider span b {
+        display: block;
+        color: var(--lime);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .btn {
+        padding: 12px 22px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(120deg, var(--sky), var(--lime));
+        color: #0b0d12;
+        box-shadow: 0 20px 40px rgba(102, 209, 255, 0.25);
+      }
+
+      .btn.primary:hover {
+        transform: translateY(-2px) scale(1.01);
+      }
+
+      .btn.ghost {
+        border-color: rgba(255, 255, 255, 0.15);
+        color: var(--ink);
+        background: rgba(15, 18, 28, 0.6);
+      }
+
+      .hero-panel {
+        background: var(--card);
+        border-radius: 28px;
+        border: 1px solid var(--stroke);
+        padding: 26px;
+        box-shadow: var(--glow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-panel::after {
+        content: "";
+        position: absolute;
+        inset: -30% auto auto -30%;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(198, 255, 79, 0.35), transparent 70%);
+        opacity: 0.7;
+        transform: translate(var(--glow-x, 0), var(--glow-y, 0));
+        transition: transform 0.2s ease;
+      }
+
+      .mini-cards {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .mini {
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .tag {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--muted);
+      }
+
+      .section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 24px 80px;
+      }
+
+      .section h2 {
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        margin: 0 0 12px;
+      }
+
+      .section p {
+        color: var(--muted);
+        max-width: 760px;
+        margin: 0 0 24px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 18px;
+        background: var(--card);
+        border: 1px solid var(--stroke);
+        box-shadow: 0 14px 30px rgba(5, 8, 20, 0.4);
+        transform: translateY(14px);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card.revealed {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .card:hover {
+        box-shadow: 0 20px 40px rgba(5, 8, 20, 0.5);
+        transform: translateY(-6px);
+      }
+
+      .card .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.08);
+        margin-bottom: 10px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(12, 15, 24, 0.7);
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .filter-btn.active {
+        color: #0b0d12;
+        background: linear-gradient(120deg, var(--lime), var(--sky));
+        border-color: transparent;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .step {
+        padding: 18px;
+        border-radius: 20px;
+        border: 1px solid var(--stroke);
+        background: rgba(15, 18, 28, 0.8);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .step::before {
+        content: attr(data-step);
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        color: var(--muted);
+      }
+
+      .cta {
+        background: linear-gradient(120deg, rgba(102, 209, 255, 0.2), rgba(255, 123, 199, 0.2));
+        border-radius: 26px;
+        padding: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+        align-items: center;
+      }
+
+      .download-status {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .footer {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        font-size: 0.9rem;
+      }
+
+      canvas#particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      @keyframes wordSlide {
+        0%,
+        16% {
+          transform: translateY(0);
+        }
+        20%,
+        36% {
+          transform: translateY(-1.1em);
+        }
+        40%,
+        56% {
+          transform: translateY(-2.2em);
+        }
+        60%,
+        76% {
+          transform: translateY(-3.3em);
+        }
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .nav {
+          display: none;
+        }
+        .hero {
+          padding-top: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="floating-noise"></div>
+      <canvas id="particles"></canvas>
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge">SS</div>
+          ShieldSense HR
+        </div>
+        <nav class="nav">
+          <a href="#features">Features</a>
+          <a href="#security">Security</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#download">Download</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Security-first HR platform</div>
+          <h1>
+            Protect your workforce with
+            <span class="word-slider">
+              <span>
+                <b>Phishing Defense</b>
+                <b>Smart Training</b>
+                <b>HR Automation</b>
+                <b>Role Dashboards</b>
+              </span>
+            </span>
+          </h1>
+          <p>
+            ShieldSense HR unifies admin controls, HR updates, employee training, and
+            phishing protection in one secure, easy-to-use system.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#download">Download Installer</a>
+            <a class="btn ghost" href="#features">Explore Features</a>
+          </div>
+        </div>
+
+        <div class="hero-panel" id="heroPanel">
+          <h2>Live Command Center</h2>
+          <p class="muted">Track security, HR updates, and employee engagement.</p>
+          <div class="mini-cards">
+            <div class="mini">
+              <span>Admin Setup</span>
+              <span class="tag">Secure</span>
+            </div>
+            <div class="mini">
+              <span>HR Updates</span>
+              <span class="tag">Live</span>
+            </div>
+            <div class="mini">
+              <span>Training Videos</span>
+              <span class="tag">On Demand</span>
+            </div>
+            <div class="mini">
+              <span>Phishing Scanner</span>
+              <span class="tag">Shielded</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>Every feature, beautifully organized</h2>
+        <p>
+          Filter by role to see the exact capabilities for Admins, HR, Employees, and Security teams.
+        </p>
+        <div class="filters" id="featureFilters">
+          <button class="filter-btn active" data-filter="all">All Roles</button>
+          <button class="filter-btn" data-filter="admin">Admin</button>
+          <button class="filter-btn" data-filter="hr">HR</button>
+          <button class="filter-btn" data-filter="employee">Employee</button>
+          <button class="filter-btn" data-filter="security">Security</button>
+        </div>
+        <div class="feature-grid" id="featureGrid">
+          <div class="card" data-role="admin">
+            <div class="pill">Admin</div>
+            <h3>Admin Login & Dashboard</h3>
+            <p>Access company stats, users, and control panels in one place.</p>
+          </div>
+          <div class="card" data-role="admin">
+            <div class="pill">Admin</div>
+            <h3>Database Cleanup</h3>
+            <p>Clear legacy data safely with built-in database tools.</p>
+          </div>
+          <div class="card" data-role="admin">
+            <div class="pill">Admin</div>
+            <h3>System SMEs View</h3>
+            <p>Track subject-matter experts and internal champions.</p>
+          </div>
+          <div class="card" data-role="hr">
+            <div class="pill">HR</div>
+            <h3>HR Updates Hub</h3>
+            <p>Publish announcements, policies, and company alerts.</p>
+          </div>
+          <div class="card" data-role="hr">
+            <div class="pill">HR</div>
+            <h3>Training Video Uploads</h3>
+            <p>Upload training content and provide secure access.</p>
+          </div>
+          <div class="card" data-role="employee">
+            <div class="pill">Employee</div>
+            <h3>Employee Dashboard</h3>
+            <p>View tasks, training, and updates in one workspace.</p>
+          </div>
+          <div class="card" data-role="employee">
+            <div class="pill">Employee</div>
+            <h3>Employee Chatbot</h3>
+            <p>Ask HR or security questions with guided support.</p>
+          </div>
+          <div class="card" data-role="security">
+            <div class="pill">Security</div>
+            <h3>Phishing Link Scanner</h3>
+            <p>Analyze suspicious URLs with risk guidance.</p>
+          </div>
+          <div class="card" data-role="security">
+            <div class="pill">Security</div>
+            <h3>Phishing Reports & Tips</h3>
+            <p>Share learnings and reinforce awareness.</p>
+          </div>
+          <div class="card" data-role="employee">
+            <div class="pill">Employee</div>
+            <h3>Security Quizzes</h3>
+            <p>Measure awareness with interactive quizzes.</p>
+          </div>
+          <div class="card" data-role="admin">
+            <div class="pill">Admin</div>
+            <h3>Backup & Recovery</h3>
+            <p>Protect HR data with a built-in backup workflow.</p>
+          </div>
+          <div class="card" data-role="employee">
+            <div class="pill">Employee</div>
+            <h3>Training Video Player</h3>
+            <p>Watch assigned modules directly inside the app.</p>
+          </div>
+          <div class="card" data-role="security">
+            <div class="pill">Security</div>
+            <h3>OTP & Password Reset</h3>
+            <p>Secure authentication and fast recovery flows.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="security">
+        <h2>Security-first workflows</h2>
+        <p>From secure login to phishing detection, ShieldSense HR reduces risk in every workflow.</p>
+        <div class="feature-grid">
+          <div class="card" data-role="security">
+            <div class="pill">Protection</div>
+            <h3>OTP Login & Recovery</h3>
+            <p>Time-bound verification prevents unauthorized access.</p>
+          </div>
+          <div class="card" data-role="security">
+            <div class="pill">Detection</div>
+            <h3>Phishing Scanner</h3>
+            <p>Scan URLs and educate employees with clear guidance.</p>
+          </div>
+          <div class="card" data-role="security">
+            <div class="pill">Awareness</div>
+            <h3>Training + Quizzes</h3>
+            <p>Pair videos with quizzes for measurable improvement.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <h2>Launch in four steps</h2>
+        <p>A clear path from installation to secure daily operations.</p>
+        <div class="timeline">
+          <div class="step" data-step="Step 1">
+            <h3>Install ShieldSense HR</h3>
+            <p>Download and run the Windows installer.</p>
+          </div>
+          <div class="step" data-step="Step 2">
+            <h3>Admin Configuration</h3>
+            <p>Create admin credentials and set company details.</p>
+          </div>
+          <div class="step" data-step="Step 3">
+            <h3>Activate Employees</h3>
+            <p>Invite employees, assign training, and enable scanners.</p>
+          </div>
+          <div class="step" data-step="Step 4">
+            <h3>Monitor & Improve</h3>
+            <p>Track engagement, publish HR updates, and improve security.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="cta">
+          <div>
+            <h2>Download ShieldSense HR</h2>
+            <p>
+              Click below to download the Windows installer. After it downloads, run it to finish setup.
+            </p>
+            <div class="download-status" id="downloadStatus">
+              Ready when you are.
+            </div>
+          </div>
+          <div>
+            <a
+              class="btn primary"
+              id="downloadBtn"
+              href="https://drive.google.com/file/d/16NxUMQ2zRUmFCVf9QJT8k2marLZ8SPJT/view?usp=drive_link"
+              download="ShieldSenseHRsetup.exe"
+            >
+              Download ShieldSense HR
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>ShieldSense HR • Employee Management & Security Platform</div>
+        <div>Built for Admin, HR, and Employee teams.</div>
+      </footer>
+    </div>
+
+    <script>
+      const heroPanel = document.getElementById("heroPanel");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const downloadStatus = document.getElementById("downloadStatus");
+      const filters = document.querySelectorAll(".filter-btn");
+      const cards = document.querySelectorAll(".card");
+      const canvas = document.getElementById("particles");
+      const ctx = canvas.getContext("2d");
+
+      let particles = [];
+      let w = 0;
+      let h = 0;
+
+      function resizeCanvas() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+
+      function createParticle() {
+        return {
+          x: Math.random() * w,
+          y: h + Math.random() * 200,
+          r: Math.random() * 2 + 0.8,
+          speed: Math.random() * 0.6 + 0.4,
+          drift: Math.random() * 0.8 - 0.4,
+          alpha: Math.random() * 0.6 + 0.2,
+        };
+      }
+
+      function initParticles(count = 90) {
+        particles = Array.from({ length: count }, createParticle);
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "rgba(102, 209, 255, 0.25)";
+        particles.forEach((p) => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(102, 209, 255, ${p.alpha})`;
+          ctx.fill();
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < -50) {
+            p.y = h + Math.random() * 200;
+            p.x = Math.random() * w;
+          }
+        });
+        requestAnimationFrame(drawParticles);
+      }
+
+      function burstParticles() {
+        for (let i = 0; i < 30; i += 1) {
+          particles.push({
+            x: Math.random() * w,
+            y: h,
+            r: Math.random() * 2.5 + 1,
+            speed: Math.random() * 1.2 + 0.6,
+            drift: Math.random() * 1.2 - 0.6,
+            alpha: Math.random() * 0.8 + 0.2,
+          });
+        }
+      }
+
+      heroPanel.addEventListener("mousemove", (event) => {
+        const rect = heroPanel.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 30;
+        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 30;
+        heroPanel.style.setProperty("--glow-x", `${x}px`);
+        heroPanel.style.setProperty("--glow-y", `${y}px`);
+      });
+
+      heroPanel.addEventListener("mouseleave", () => {
+        heroPanel.style.setProperty("--glow-x", "0px");
+        heroPanel.style.setProperty("--glow-y", "0px");
+      });
+
+      downloadBtn.addEventListener("click", () => {
+        downloadStatus.textContent = "Preparing your download...";
+        setTimeout(() => {
+          downloadStatus.textContent =
+            "Download started. After it finishes, run the installer to complete setup.";
+        }, 900);
+      });
+
+      filters.forEach((button) => {
+        button.addEventListener("click", () => {
+          filters.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+          const filter = button.dataset.filter;
+          cards.forEach((card) => {
+            const role = card.dataset.role;
+            const shouldShow = filter === "all" || role === filter;
+            card.style.display = shouldShow ? "block" : "none";
+            if (shouldShow) {
+              requestAnimationFrame(() => card.classList.add("revealed"));
+            } else {
+              card.classList.remove("revealed");
+            }
+          });
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+            }
+          });
+        },
+        { threshold: 0.18 }
+      );
+
+      cards.forEach((card) => observer.observe(card));
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 60) {
+          burstParticles();
+        }
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      initParticles();
+      drawParticles();
+    </script>
+  </body>
+</html>
